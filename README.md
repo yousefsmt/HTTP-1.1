@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🚀 HTTP/1.1 Server in Modern C++ (RFC 2616)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -8,12 +7,10 @@
 
 An educational yet functional HTTP/1.1 server implemented from scratch in modern C++, inspired by the official [RFC 2616](https://datatracker.ietf.org/doc/html/rfc2616) specification.
 
----
 
 ## 🧠 About the Project
 =======
 # 🧠 HTTP/1.1 Server in C++ (RFC 2616)
->>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 
 This project is designed to provide a clear, hands-on example of how HTTP/1.1 works under the hood. It's perfect for developers, students, and network protocol enthusiasts who want to learn:
 
@@ -21,13 +18,9 @@ This project is designed to provide a clear, hands-on example of how HTTP/1.1 wo
 - How to build a standards-compliant server from the ground up
 - How socket programming works in C++
 
-<<<<<<< HEAD
----
-
 ## ✨ Features
 =======
 ## 📚 Project Overview
->>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 
 - ✅ TCP socket server
 - ✅ Basic HTTP/1.1 request parsing (method, path, headers)
@@ -41,11 +34,8 @@ This project is designed to provide a clear, hands-on example of how HTTP/1.1 wo
 
 ## 📁 Project Structure
 
-<<<<<<< HEAD
 ```
 =======
-
->>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 http-server-rfc2616/
 ├── include/http/           # Header files
 │   ├── server.hpp          # Core server logic
@@ -64,10 +54,7 @@ http-server-rfc2616/
 ├── .gitignore
 ├── LICENSE
 └── README.md
-<<<<<<< HEAD
 ```
-
----
 
 ## ⚙️ Requirements
 =======
@@ -75,7 +62,6 @@ http-server-rfc2616/
 ## 🚀 Getting Started
 
 ### 🔧 Requirements
->>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 
 - C++17 or newer
 - CMake ≥ 3.14
@@ -85,7 +71,6 @@ http-server-rfc2616/
 
 ## 🛠️ Build & Run
 
-<<<<<<< HEAD
 ```bash
 # Clone the repo
 =======
@@ -111,7 +96,6 @@ make
 
 ## 🧪 Run Tests
 
-```bash
 # From the build/ directory
 ctest --verbose
 
@@ -123,9 +107,9 @@ curl http://localhost:8080/
 
 Or simply open a browser and navigate to:
 
-```
+
 http://localhost:8080/
-```
+
 
 
 ## 🗺️ Roadmap
