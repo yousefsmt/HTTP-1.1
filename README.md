@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 HTTP/1.1 Server in Modern C++ (RFC 2616)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -10,6 +11,9 @@ An educational yet functional HTTP/1.1 server implemented from scratch in modern
 ---
 
 ## 🧠 About the Project
+=======
+# 🧠 HTTP/1.1 Server in C++ (RFC 2616)
+>>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 
 This project is designed to provide a clear, hands-on example of how HTTP/1.1 works under the hood. It's perfect for developers, students, and network protocol enthusiasts who want to learn:
 
@@ -17,9 +21,13 @@ This project is designed to provide a clear, hands-on example of how HTTP/1.1 wo
 - How to build a standards-compliant server from the ground up
 - How socket programming works in C++
 
+<<<<<<< HEAD
 ---
 
 ## ✨ Features
+=======
+## 📚 Project Overview
+>>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 
 - ✅ TCP socket server
 - ✅ Basic HTTP/1.1 request parsing (method, path, headers)
@@ -31,11 +39,13 @@ This project is designed to provide a clear, hands-on example of how HTTP/1.1 wo
 - 🔜 Full RFC 2616 compliance
 - 🔜 Modular unit testing
 
----
-
 ## 📁 Project Structure
 
+<<<<<<< HEAD
 ```
+=======
+
+>>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 http-server-rfc2616/
 ├── include/http/           # Header files
 │   ├── server.hpp          # Core server logic
@@ -54,11 +64,18 @@ http-server-rfc2616/
 ├── .gitignore
 ├── LICENSE
 └── README.md
+<<<<<<< HEAD
 ```
 
 ---
 
 ## ⚙️ Requirements
+=======
+
+## 🚀 Getting Started
+
+### 🔧 Requirements
+>>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 
 - C++17 or newer
 - CMake ≥ 3.14
@@ -68,8 +85,12 @@ http-server-rfc2616/
 
 ## 🛠️ Build & Run
 
+<<<<<<< HEAD
 ```bash
 # Clone the repo
+=======
+# Clone the repository
+>>>>>>> f95c734453d7db3f21a339551a0efb9505f5eb04
 git clone https://github.com/YOUR_USERNAME/http-server-rfc2616.git
 cd http-server-rfc2616
 
@@ -93,17 +114,12 @@ make
 ```bash
 # From the build/ directory
 ctest --verbose
-```
-
----
 
 ## 🔍 Try It Out
 
 After starting the server, test it using:
 
-```bash
 curl http://localhost:8080/
-```
 
 Or simply open a browser and navigate to:
 
@@ -111,7 +127,6 @@ Or simply open a browser and navigate to:
 http://localhost:8080/
 ```
 
----
 
 ## 🗺️ Roadmap
 
@@ -126,7 +141,6 @@ http://localhost:8080/
 | Complete RFC 2616 compliance  | 🚧 Planned |
 | Unit testing for all modules  | 🚧 Planned |
 
----
 
 ## 📚 Resources
 
@@ -134,13 +148,10 @@ http://localhost:8080/
 - [Beej’s Guide to Network Programming](https://beej.us/guide/bgnet/)
 - [C++ Reference](https://en.cppreference.com/)
 
----
-
 ## 📄 License
 
 Licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
 
 ## 🤝 Contributing
 
@@ -154,7 +165,6 @@ Contributions are very welcome! Please:
 
 For major changes, open an issue to discuss your idea first.
 
----
 
 ## 👤 Author
 
