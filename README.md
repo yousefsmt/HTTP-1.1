@@ -1,12 +1,6 @@
-
----
-
-```markdown
 # 🧠 HTTP/1.1 Server in C++ (RFC 2616)
 
 A simple yet educational implementation of an HTTP/1.1 server in modern C++, built from scratch by closely following the [RFC 2616](https://datatracker.ietf.org/doc/html/rfc2616) specification.
-
----
 
 ## 📚 Project Overview
 
@@ -20,11 +14,8 @@ This project aims to implement a basic HTTP/1.1 server using C++. It focuses on 
 
 The code is modular and easy to extend for learning or production purposes.
 
----
-
 ## 📁 Project Structure
 
-```
 
 http-server-rfc2616/
 ├── include/
@@ -46,10 +37,6 @@ http-server-rfc2616/
 ├── LICENSE
 └── README.md
 
-````
-
----
-
 ## 🚀 Getting Started
 
 ### 🔧 Requirements
@@ -60,7 +47,6 @@ http-server-rfc2616/
 
 ### 🛠️ Build and Run
 
-```bash
 # Clone the repository
 git clone https://github.com/YOUR_USERNAME/http-server-rfc2616.git
 cd http-server-rfc2616
@@ -76,28 +62,20 @@ make
 
 # Run the server
 ./http_server
-````
 
 ### 🧪 Running Tests
 
-```bash
 # From the build directory
 ctest --verbose
-```
-
----
 
 ## ⚙️ Example Request
 
 Once running, you can test it with:
 
-```bash
 curl http://localhost:8080/
-```
 
 Or open your browser and navigate to `http://localhost:8080/`.
 
----
 
 ## 📌 Roadmap
 
@@ -111,7 +89,6 @@ Or open your browser and navigate to `http://localhost:8080/`.
 * [ ] Static file serving
 * [ ] Unit tests for each module
 
----
 
 ## 🧠 References
 
@@ -119,19 +96,15 @@ Or open your browser and navigate to `http://localhost:8080/`.
 * [Beej's Guide to Network Programming](https://beej.us/guide/bgnet/)
 * [C++ Reference (cppreference.com)](https://en.cppreference.com/)
 
----
-
 ## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
 
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to fork the repo and submit pull requests. For major changes, please open an issue first to discuss your ideas.
 
----
 
 ## 👨‍💻 Author
 
