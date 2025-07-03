@@ -15,30 +15,11 @@
  * Include this file in your project to add HTTP message parsing capabilities.
  *
  * Author: Yousef.smt
- * Date: [Optional Date]
+ * Date: 02-Jul-2024
  */
-
 
 #pragma once
 
-/*
-
-POST /users HTTP/1.1
-Host: example.com
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 49
-
-name=FirstName+LastName&email=bsmth%40example.com
-
-Request       = Request-Line
-                *(( general-header
-                    | request-header
-                    | entity-header ) CRLF)
-                CRLF
-                [ message-body ]
-
-Request-Line   = Method SP Request-URI SP HTTP-Version CRLF
-*/
 #include <iostream>
 #include <nlohmann/json.hpp>
 
@@ -63,6 +44,11 @@ namespace http {
             ~ParserMessage();
 
             json parseHTTPrequest(std::string& MessageRequest);
+
+            bool parseHTTPrequest_Line(std::string& MessageRequest, json *ModifySET);
+            bool parseHTTPrequest_Header(std::string& MessageRequest, json *ModifySET);
+            bool parseHTTPrequest_Body(std::string& MessageRequest, json *ModifySET);
+
             json parseHTTPresponse(std::string& MessageResponse);
 
 
