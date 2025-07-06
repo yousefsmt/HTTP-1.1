@@ -48,8 +48,6 @@ http-server-rfc2616/
 │   ├── request.cpp
 │   ├── response.cpp
 │   └── parser.cpp
-├── test/                   # Unit tests
-│   └── test_http.cpp
 ├── CMakeLists.txt          # Build system
 ├── .gitignore
 ├── LICENSE
@@ -135,23 +133,3 @@ http://localhost:8080/
 ## 📄 License
 
 Licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-
-## 🤝 Contributing
-
-Contributions are very welcome! Please:
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/my-feature`)
-5. Open a pull request
-
-For major changes, open an issue to discuss your idea first.
-
-
-## 👤 Author
-
-**Yousef.smt** — Passionate about systems programming, networking, and protocol design. This project was built for learning and sharing knowledge through hands-on implementation of real-world standards.
-
----
