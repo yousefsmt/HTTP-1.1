@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <fstream>
 #include <nlohmann/json.hpp>
 
 #include "parser.hpp"
@@ -10,9 +9,10 @@ using json = nlohmann::json;
 http::ParserMessage::ParserMessage(){}
 http::ParserMessage::~ParserMessage(){}
 
-json http::ParserMessage::parseHTTPrequest(std::string& MessageRequest){
+json http::ParserMessage::parserHTTPrequest(std::string& MessageRequest){
     json *Modify_JSONrequest = &HTTPmessage_request;
-    int LineIDX {};
+    HTTPmethods *Modify_Methods = &method;
+    int LineIDX {}, ImportMethod {};
     std::vector<std::string> SeparateLines {};
     std::string EachLine {};
 
@@ -27,25 +27,25 @@ json http::ParserMessage::parseHTTPrequest(std::string& MessageRequest){
         }
     }
 
-    parseHTTPrequest_Line(SeparateLines[0], Modify_JSONrequest);
+    parserHTTPrequest_Line(SeparateLines[0], Modify_JSONrequest);
 
     SeparateLines.erase(SeparateLines.begin());
     for (std::string i : SeparateLines)
         EachLine += i + '\n';
     EachLine.erase(EachLine.end()-1);
     
-    parseHTTPrequest_Header(EachLine, Modify_JSONrequest);
+    parserHTTPrequest_Header(EachLine, Modify_JSONrequest);
 
     MessageRequest.erase(MessageRequest.begin());
     MessageRequest.erase(MessageRequest.end()-1);
-    parseHTTPrequest_Body(MessageRequest, Modify_JSONrequest);
+    parserHTTPrequest_Body(MessageRequest, Modify_JSONrequest);
 
-    std::cout << std::setw(4) << *Modify_JSONrequest << '\n';
+    *Modify_Methods = StringToHTTPMethod(HTTPmessage_request["Request-Line"][0]);
 
     return HTTPmessage_request;
 }
 
-bool http::ParserMessage::parseHTTPrequest_Line(std::string& MessageRequest, json *ModifySET){
+bool http::ParserMessage::parserHTTPrequest_Line(std::string& MessageRequest, json *ModifySET){
     int LineIDX {}, IDX {};
     std::string SeparateLines[3] {};
 
@@ -66,7 +66,7 @@ bool http::ParserMessage::parseHTTPrequest_Line(std::string& MessageRequest, jso
     return 1;
 }
 
-bool http::ParserMessage::parseHTTPrequest_Header(std::string& MessageRequest, json *ModifySET){
+bool http::ParserMessage::parserHTTPrequest_Header(std::string& MessageRequest, json *ModifySET){
     int LineIDX {}, TempNum {};
     std::vector<std::string> LineIdx {}, Text {};
     std::string EachLine {};
@@ -100,15 +100,21 @@ bool http::ParserMessage::parseHTTPrequest_Header(std::string& MessageRequest, j
     return 1;
 }
 
-bool http::ParserMessage::parseHTTPrequest_Body(std::string& MessageRequest, json *ModifySET){
+bool http::ParserMessage::parserHTTPrequest_Body(std::string& MessageRequest, json *ModifySET){
     
     (*ModifySET)["Message-Body"] = MessageRequest;
 
     return 1;
 }
 
-json http::ParserMessage::parseHTTPresponse(std::string& MessageResponse){
-    json j;
+http::HTTPmethods http::ParserMessage::StringToHTTPMethod(const std::string& s) {
+    auto it = MethodMAP.find(s);
+    if (it != MethodMAP.end()) return it->second;
+    throw std::invalid_argument("Unknown HTTP method: " + s);
+}
 
-    return j;
+std::string http::ParserMessage::CreateHTTP_Response(){
+    std::string x {};
+
+    return x;
 }

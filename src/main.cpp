@@ -1,18 +1,16 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <sys/time.h>
 
 #include "parser.hpp"
 
 using json = nlohmann::json;
 
-
 int main(){
+    http::ParserMessage ParserTools;
+    json ParsedMessage;
 
-    http::ParserMessage ce;
-
-    json req;
-
-    std::string message {"POST /submit-form HTTP/1.1\n"
+    std::string TestCase {"PUT /submit-form HTTP/1.1\n"
                 "Host: www.example.com\n"
                 "User-Agent: curl/7.68.0\n"
                 "Accept: */*\n"
@@ -21,7 +19,8 @@ int main(){
                 "\n"
                 "name=John+Doe&age=25\n"};
 
-    req = ce.parseHTTPrequest(message);
+    
+    ParsedMessage = ParserTools.parserHTTPrequest(TestCase);
 
     return 0;
 }

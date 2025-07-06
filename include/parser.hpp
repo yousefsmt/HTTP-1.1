@@ -38,18 +38,31 @@ namespace http {
         CONNECT
     };
 
+    static const std::unordered_map<std::string, HTTPmethods> MethodMAP = {
+        { "OPTIONS", HTTPmethods::OPTIONS },
+        { "GET",     HTTPmethods::GET },
+        { "HEAD",    HTTPmethods::HEAD },
+        { "POST",    HTTPmethods::POST },
+        { "PUT",     HTTPmethods::PUT },
+        { "DELETE",  HTTPmethods::DELETE },
+        { "TRACE",   HTTPmethods::TRACE },
+        { "CONNECT", HTTPmethods::CONNECT }
+    };
+
     class ParserMessage {
         public:
             ParserMessage();
             ~ParserMessage();
 
-            json parseHTTPrequest(std::string& MessageRequest);
+            json parserHTTPrequest(std::string&);
 
-            bool parseHTTPrequest_Line(std::string& MessageRequest, json *ModifySET);
-            bool parseHTTPrequest_Header(std::string& MessageRequest, json *ModifySET);
-            bool parseHTTPrequest_Body(std::string& MessageRequest, json *ModifySET);
+            bool parserHTTPrequest_Line(std::string&, json*);
+            bool parserHTTPrequest_Header(std::string&, json*);
+            bool parserHTTPrequest_Body(std::string&, json*);
 
-            json parseHTTPresponse(std::string& MessageResponse);
+            HTTPmethods StringToHTTPMethod(const std::string&);           
+
+            std::string CreateHTTP_Response();
 
 
         private:
