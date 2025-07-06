@@ -7,9 +7,6 @@
 
 An educational yet functional HTTP/1.1 server implemented from scratch in modern C++, inspired by the official [RFC 2616](https://datatracker.ietf.org/doc/html/rfc2616) specification.
 
-
-## 🧠 About the Project
-=======
 # 🧠 HTTP/1.1 Server in C++ (RFC 2616)
 
 This project is designed to provide a clear, hands-on example of how HTTP/1.1 works under the hood. It's perfect for developers, students, and network protocol enthusiasts who want to learn:
