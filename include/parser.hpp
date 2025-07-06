@@ -55,21 +55,18 @@ namespace http {
             ~ParserMessage();
 
             json parserHTTPrequest(std::string&);
-
-            bool parserHTTPrequest_Line(std::string&, json*);
-            bool parserHTTPrequest_Header(std::string&, json*);
-            bool parserHTTPrequest_Body(std::string&, json*);
-
-            HTTPmethods StringToHTTPMethod(const std::string&);           
-
             std::string CreateHTTP_Response();
-
 
         private:
             HTTPmethods method;
             json HTTPmessage_request;
             json HTTPmessage_response;
-            
+
+            bool parserHTTPrequest_Line(std::string&, json*);
+            bool parserHTTPrequest_Header(std::string&, json*);
+            bool parserHTTPrequest_Body(std::string&, json*);
+
+            HTTPmethods StringToHTTPMethod(const std::string&);  
     };
 
 } // namespace http
