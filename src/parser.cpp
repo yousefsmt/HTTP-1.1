@@ -19,7 +19,7 @@ json http::ParserMessage::parserHTTPrequest(std::string& MessageRequest){
     while (true) {
         LineIDX = (MessageRequest.find('\n') == std::string::npos) ? 0 : MessageRequest.find('\n');
         if (LineIDX){
-            SeparateLines.push_back(MessageRequest.substr(0, LineIDX));
+            SeparateLines.emplace_back(MessageRequest.substr(0, LineIDX));
             MessageRequest.erase(0, LineIDX+1);
         }
         else{    
@@ -45,7 +45,7 @@ json http::ParserMessage::parserHTTPrequest(std::string& MessageRequest){
     return HTTPmessage_request;
 }
 
-bool http::ParserMessage::parserHTTPrequest_Line(std::string& MessageRequest, json *ModifySET){
+int http::ParserMessage::parserHTTPrequest_Line(std::string& MessageRequest, json *ModifySET){
     int LineIDX {}, IDX {};
     std::string SeparateLines[3] {};
 
@@ -66,7 +66,7 @@ bool http::ParserMessage::parserHTTPrequest_Line(std::string& MessageRequest, js
     return 1;
 }
 
-bool http::ParserMessage::parserHTTPrequest_Header(std::string& MessageRequest, json *ModifySET){
+int http::ParserMessage::parserHTTPrequest_Header(std::string& MessageRequest, json *ModifySET){
     int LineIDX {}, TempNum {};
     std::vector<std::string> LineIdx {}, Text {};
     std::string EachLine {};
@@ -76,8 +76,8 @@ bool http::ParserMessage::parserHTTPrequest_Header(std::string& MessageRequest, 
         if (LineIDX){
             EachLine = MessageRequest.substr(0, LineIDX);
             TempNum = EachLine.find(':');
-            LineIdx.push_back(EachLine.substr(0, TempNum));
-            Text.push_back(EachLine.substr(TempNum+2, EachLine.length()));
+            LineIdx.emplace_back(EachLine.substr(0, TempNum));
+            Text.emplace_back(EachLine.substr(TempNum+2, EachLine.length()));
             MessageRequest.erase(0, LineIDX+1);
         }
         else{    
@@ -86,8 +86,8 @@ bool http::ParserMessage::parserHTTPrequest_Header(std::string& MessageRequest, 
     }
 
     TempNum = MessageRequest.find(':');
-    LineIdx.push_back(MessageRequest.substr(0, TempNum));
-    Text.push_back(MessageRequest.substr(TempNum+2, MessageRequest.length()));
+    LineIdx.emplace_back(MessageRequest.substr(0, TempNum));
+    Text.emplace_back(MessageRequest.substr(TempNum+2, MessageRequest.length()));
 
     if (ModifySET) {
         for (size_t i = 0; i < std::min(Text.size(), LineIdx.size()); ++i) {
@@ -100,7 +100,7 @@ bool http::ParserMessage::parserHTTPrequest_Header(std::string& MessageRequest, 
     return 1;
 }
 
-bool http::ParserMessage::parserHTTPrequest_Body(std::string& MessageRequest, json *ModifySET){
+int http::ParserMessage::parserHTTPrequest_Body(std::string& MessageRequest, json *ModifySET){
     
     (*ModifySET)["Message-Body"] = MessageRequest;
 

@@ -62,9 +62,9 @@ namespace http {
             json HTTPmessage_request;
             json HTTPmessage_response;
 
-            bool parserHTTPrequest_Line(std::string&, json*);
-            bool parserHTTPrequest_Header(std::string&, json*);
-            bool parserHTTPrequest_Body(std::string&, json*);
+            int parserHTTPrequest_Line(std::string&, json*);
+            int parserHTTPrequest_Header(std::string&, json*);
+            int parserHTTPrequest_Body(std::string&, json*);
 
             HTTPmethods StringToHTTPMethod(const std::string&);  
     };
