@@ -4,12 +4,17 @@
 #include <cpr/cpr.h>
 
 #include "parser.hpp"
+#include "server.hpp"
 
 using json = nlohmann::json;
+using namespace http;
 
 int main(){
-    http::ParserMessage ParserTools;
+    timeval start {}, stop {};
+    ParserMessage ParserTools;
+    TCPServer runServer;
     json ParsedMessage;
+    long double x {};
 
     std::string TestCase1 {"PUT /submit-form HTTP/1.1\n"
                 "Host: www.example.com\n"
@@ -30,8 +35,13 @@ int main(){
                 "{\"key\":\"value\"}";
 
 
-    
-    ParsedMessage = ParserTools.parserHTTPrequest(TestCase2);
+    gettimeofday(&start, NULL);
+    ParsedMessage = ParserTools.parserHTTPrequest(TestCase1);
+    gettimeofday(&stop, NULL);
+
+    x = (stop.tv_sec - start.tv_sec)*1000.0 + (stop.tv_usec - start.tv_usec);
+
+    std::cout << "Elapsed Time: " << x << '\n';
 
     std::cout << std::setw(4) << ParsedMessage << '\n';
 

@@ -16,14 +16,16 @@
  *
  * Author: Yousef.smt
  * Date: 02-Jul-2024
- */
+*/
 
-#pragma once
+#ifndef HTTP_INCLUDE_PARSER_H_
+#define HTTP_INCLUDE_PARSER_H_
 
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-namespace http {
+namespace http
+{
 
     using json = nlohmann::json;
 
@@ -70,3 +72,5 @@ namespace http {
     };
 
 } // namespace http
+
+#endif // HTTP_INCLUDE_PARSER_H_
