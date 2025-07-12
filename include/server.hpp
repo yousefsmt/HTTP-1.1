@@ -24,22 +24,25 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <pthread.h>
 
 
 namespace http
 {
     class TCPServer {
         public:
-            TCPServer(/* args */);
+            TCPServer(const std::string IPaddress, const std::string Port);
             ~TCPServer();
         private:
-            int ServerSocket;
+            pthread_t AcceptThread;
+            int ServerSocket, ClientSocket;
             sockaddr_in ServerAddress;
             socklen_t ServerLength;
-            int CreateServerSocket();
+            char Buffer[1024] {};
+            int CreateServerSocket(const std::string IPaddress, const std::string Port);
             int CloseServerSocket();
             int ServerHandler();
-
+            static void* AcceptHandler(void* args);
     };
     
 } // namespace http

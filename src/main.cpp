@@ -10,11 +10,9 @@ using json = nlohmann::json;
 using namespace http;
 
 int main(){
-    timeval start {}, stop {};
     ParserMessage ParserTools;
-    TCPServer runServer;
+    TCPServer runServer("0.0.0.0", "8080");
     json ParsedMessage;
-    long double x {};
 
     std::string TestCase1 {"PUT /submit-form HTTP/1.1\n"
                 "Host: www.example.com\n"
@@ -34,16 +32,7 @@ int main(){
                 "\r\n"
                 "{\"key\":\"value\"}";
 
-
-    gettimeofday(&start, NULL);
     ParsedMessage = ParserTools.parserHTTPrequest(TestCase1);
-    gettimeofday(&stop, NULL);
-
-    x = (stop.tv_sec - start.tv_sec)*1000.0 + (stop.tv_usec - start.tv_usec);
-
-    std::cout << "Elapsed Time: " << x << '\n';
-
-    std::cout << std::setw(4) << ParsedMessage << '\n';
 
     return 0;
 }
