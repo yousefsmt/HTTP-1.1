@@ -9,30 +9,47 @@
 using json = nlohmann::json;
 using namespace http;
 
-int main(){
+/*
+TODO: Implement input mechanism for IP address and port configuration
+FIXME: Add return value for the request parser function in main()
+TODO: Generate appropriate HTTP (or custom) response messages
+TODO: Implement multithreading to handle multiple clients concurrently:
+    - Thread for accepting new connections
+    - Thread(s) for receiving data from each client
+*/
+
+int main(int argc, char* argv[]) {
+    std::string ip {"0.0.0.0"};
+    std::string port {"8080"};
+
     ParserMessage ParserTools;
-    TCPServer runServer("0.0.0.0", "8080");
     json ParsedMessage;
 
-    std::string TestCase1 {"PUT /submit-form HTTP/1.1\n"
-                "Host: www.example.com\n"
-                "User-Agent: curl/7.68.0\n"
-                "Accept: */*\n"
-                "Content-Type: application/x-www-form-urlencoded\n"
-                "Content-Length: 27\n"
-                "\n"
-                "name=John+Doe&age=25\n"};
+    switch (argc) {
+        case 1:
+            break;
+        case 2:
+            ip = argv[1];
+            break;
+        case 3:
+            ip = argv[1];
+            port = argv[2];
+            break;
+        default:
+            std::cerr << "Usage: " << argv[0] << " [IP_ADDRESS] [PORT]\n";
+            return 1;
+    }
 
-    std::string TestCase2 =
-                "POST /api/data HTTP/1.1\r\n"
-                "Host: example.com\r\n"
-                "User-Agent: CustomClient/1.0\r\n"
-                "Content-Type: application/json\r\n"
-                "Content-Length: 18\r\n"
-                "\r\n"
-                "{\"key\":\"value\"}";
+    try {
+        TCPServer runServer(ip, port);
+    } catch (const std::exception& ex) {
+        std::cerr << "Failed to start server: " << ex.what() << '\n';
+        return 1;
+    }
 
-    ParsedMessage = ParserTools.parserHTTPrequest(TestCase1);
+    // std::cout << runServer.x;            
+    // ParsedMessage = ParserTools.parserHTTPrequest(runServer.x);
+    // std::cout << std::setw(4) << ParsedMessage << '\n';
 
     return 0;
 }

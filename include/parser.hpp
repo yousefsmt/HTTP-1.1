@@ -53,8 +53,8 @@ namespace http
 
     class ParserMessage {
         public:
-            ParserMessage();
-            ~ParserMessage();
+            ParserMessage() = default;
+            ~ParserMessage() = default;
 
             json parserHTTPrequest(std::string&);
             std::string CreateHTTP_Response();
@@ -64,9 +64,9 @@ namespace http
             json HTTPmessage_request;
             json HTTPmessage_response;
 
-            int parserHTTPrequest_Line(std::string&, json*);
-            int parserHTTPrequest_Header(std::string&, json*);
-            int parserHTTPrequest_Body(std::string&, json*);
+            int parserHTTPrequest_Line(const std::vector<std::string>&, json&);
+            int parserHTTPrequest_Header(const std::vector<std::string>&, json&);
+            int parserHTTPrequest_Body(const std::vector<std::string>&, json&);
 
             HTTPmethods StringToHTTPMethod(const std::string&);  
     };

@@ -11,9 +11,9 @@ namespace http
     TCPServer::TCPServer(const std::string IPaddress, const std::string Port){
         CreateServerSocket(IPaddress, Port);
     }
-
+    
     TCPServer::~TCPServer(){
-        if(CloseServerSocket())
+        if(!CloseServerSocket())
             std::cout << "ERROR: Sockets close failed.\n";
     }
 
