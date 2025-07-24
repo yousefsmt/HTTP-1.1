@@ -2,14 +2,15 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <pthread.h>
 
 #include "server.hpp"
 
 namespace http
 {
-    TCPServer::TCPServer(const std::string IPaddress, const std::string Port){
-        CreateServerSocket(IPaddress, Port);
+    TCPServer::TCPServer(const std::string& IPaddress, const std::string& Port)
+        : ServerSocket(0), ClientSocket(0), ServerAddress({0}), ServerLength(0), IPaddress_(IPaddress), Port_(Port)
+    {
+        CreateServerSocket();
     }
     
     TCPServer::~TCPServer(){
@@ -17,77 +18,61 @@ namespace http
             std::cout << "ERROR: Sockets close failed.\n";
     }
 
-    int TCPServer::CreateServerSocket(const std::string IPaddress, const std::string Port){
-        int isCorrect {};
+    const bool TCPServer::CreateServerSocket(){
+        uint8_t isCorrect {};
+        uint16_t PortNumber_Casted {};
 
         ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
         if (ServerSocket == -1){
             perror("Creation socket: ");
-            return 0;
+            return false;
         }
 
+        PortNumber_Casted = static_cast<uint16_t>(std::stoi(Port_));
+
         ServerAddress.sin_family = AF_INET;
-        ServerAddress.sin_addr.s_addr = INADDR_ANY;
-        ServerAddress.sin_port = htons(8080);
+        inet_pton(AF_INET, IPaddress_.c_str(), &(ServerAddress.sin_addr.s_addr));
+        ServerAddress.sin_port = htons(PortNumber_Casted);
         ServerLength = sizeof(ServerAddress);
 
         isCorrect = bind(ServerSocket, (sockaddr *)&ServerAddress, ServerLength);
         if (isCorrect == -1){
             perror("Bind failed: ");
-            return 0;
+            return false;
         }
 
         isCorrect = listen(ServerSocket, 20);
         if (isCorrect == -1){
             perror("Listen failed: ");
-            return 0;
+            return false;
+        }
+        else{
+            std::cout << "Server listening...\n";
         }
 
-        ServerHandler();
-        return 1;
+        sockaddr_in clidd {};
+        socklen_t cliddddlen {};
+        cliddddlen = sizeof(clidd);
+        int cli = accept(ServerSocket, (sockaddr*)&clidd, &cliddddlen);
+
+        return true;
     }
 
-    int TCPServer::CloseServerSocket(){
-        int isClose {};
+    const bool TCPServer::CloseServerSocket(){
+        uint8_t isClose {};
 
         isClose = close(ServerSocket);
         if (isClose == -1){
             perror("Close failed:");
-            return 0;
+            return false;
         }
         isClose = close(ClientSocket);
         if (isClose == -1){
             perror("Close failed:");
-            return 0;
+            return false;
         }
 
-        return 1;
-    }
-
-    void* TCPServer::AcceptHandler(void* args){
-        auto* server = static_cast<TCPServer*>(args);
-        sockaddr_in ClientAddress {};
-        socklen_t ClientLength {};
-        int isRecv {};
-        ClientLength = sizeof(ClientAddress);
-        while (true)
-        {
-            server->ClientSocket = accept(server->ServerSocket, (sockaddr*)&ClientAddress, &ClientLength);
-            if (server->ClientSocket == -1){
-                perror("Accept failed:");
-                return 0;
-            }
-            isRecv = read(server->ClientSocket, server->Buffer, 1023);
-            std::cout << server->Buffer;
-        }
-        return nullptr;
-    }
-
-    int TCPServer::ServerHandler(){
-        pthread_create(&AcceptThread, NULL, &TCPServer::AcceptHandler, this);
-        pthread_detach(AcceptThread);
-
-        return 1;
+        return true;
     }
     
 } // namespace http

@@ -1,18 +1,19 @@
 /*
- * server.hpp
+ * server.h
  *
- * This header file defines the structures and functions necessary to parse
- * HTTP/1.1 requests and responses. It provides functionality to interpret 
- * HTTP headers, methods, status lines, and message bodies, enabling seamless
- * integration into HTTP servers or clients.
+ * This header file defines the structures and functions required to implement
+ * a basic HTTP/1.1 server. It provides the core components for accepting client
+ * connections, processing requests, and sending appropriate HTTP responses.
  *
- * Features:
- * - Parses HTTP/1.1 request lines (method, URI, version)
- * - Parses HTTP/1.1 response status lines (version, status code, reason phrase)
- * - Extracts and stores HTTP headers and message body
+ * Key Features:
+ * - Listens for and accepts incoming HTTP client connections
+ * - Handles request routing and response generation
+ * - Supports sending standard HTTP/1.1 status lines, headers, and bodies
+ * - Designed for integration into custom or embedded HTTP server applications
  *
  * Usage:
- * Include this file in your project to add HTTP message parsing capabilities.
+ * Include this file to add HTTP server functionality to your application.
+ * This module focuses on server-side behavior; it does not perform HTTP parsing.
  *
  * Author: Yousef.smt
  * Date: 02-Jul-2024
@@ -24,25 +25,23 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include <pthread.h>
 
+#define BUFFER_SIZE 4096
 
 namespace http
 {
     class TCPServer {
         public:
-            TCPServer(const std::string IPaddress, const std::string Port);
+            TCPServer(const std::string& IPaddress, const std::string& Port);
             ~TCPServer();
         private:
-            pthread_t AcceptThread;
             int ServerSocket, ClientSocket;
             sockaddr_in ServerAddress;
             socklen_t ServerLength;
-            char Buffer[1024] {};
-            int CreateServerSocket(const std::string IPaddress, const std::string Port);
-            int CloseServerSocket();
-            int ServerHandler();
-            static void* AcceptHandler(void* args);
+            const std::string IPaddress_;
+            const std::string Port_;
+            const bool CreateServerSocket();
+            const bool CloseServerSocket();
     };
     
 } // namespace http

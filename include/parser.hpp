@@ -1,20 +1,24 @@
 /*
  * parser.hpp
  *
- * This header file defines the structures and functions necessary to parse
- * HTTP/1.1 requests and responses. It provides functionality to interpret 
- * HTTP headers, methods, status lines, and message bodies, enabling seamless
- * integration into HTTP servers or clients.
+ * This header defines the structures and functions used to parse HTTP/1.1
+ * messages, including both requests and responses. It provides core
+ * functionality for interpreting and extracting components of HTTP communication,
+ * such as headers, status lines, and message bodies, making it suitable for use
+ * in both server-side and client-side applications.
  *
- * Features:
- * - Parses HTTP/1.1 request lines (method, URI, version)
- * - Parses HTTP/1.1 response status lines (version, status code, reason phrase)
- * - Extracts and stores HTTP headers and message body
+ * Key Features:
+ * - Parses HTTP/1.1 request lines (method, URI, HTTP version)
+ * - Parses HTTP/1.1 response status lines (HTTP version, status code, reason phrase)
+ * - Extracts and stores HTTP headers in key-value format
+ * - Handles message body parsing with content-length support
+ * - Designed for modular integration into custom HTTP applications
  *
  * Usage:
- * Include this file in your project to add HTTP message parsing capabilities.
+ * Include this header to enable HTTP message parsing in your project.
+ * This parser is lightweight and intended for manual or low-level HTTP implementations.
  *
- * Author: Yousef.smt
+ * Author: Yousef.smt  
  * Date: 02-Jul-2024
 */
 
@@ -26,10 +30,9 @@
 
 namespace http
 {
-
     using json = nlohmann::json;
 
-    enum class HTTPmethods {
+    enum class HTTPmethods{
         OPTIONS,
         GET,
         HEAD,
@@ -37,18 +40,8 @@ namespace http
         PUT,
         DELETE,
         TRACE,
-        CONNECT
-    };
-
-    static const std::unordered_map<std::string, HTTPmethods> MethodMAP = {
-        { "OPTIONS", HTTPmethods::OPTIONS },
-        { "GET",     HTTPmethods::GET },
-        { "HEAD",    HTTPmethods::HEAD },
-        { "POST",    HTTPmethods::POST },
-        { "PUT",     HTTPmethods::PUT },
-        { "DELETE",  HTTPmethods::DELETE },
-        { "TRACE",   HTTPmethods::TRACE },
-        { "CONNECT", HTTPmethods::CONNECT }
+        CONNECT,
+        UNKNOWN
     };
 
     class ParserMessage {
@@ -57,18 +50,13 @@ namespace http
             ~ParserMessage() = default;
 
             json parserHTTPrequest(std::string&);
-            std::string CreateHTTP_Response();
-
         private:
-            HTTPmethods method;
-            json HTTPmessage_request;
-            json HTTPmessage_response;
+            HTTPmethods ExtractedMETHOD;
+            json ParsedHTTP_request;
 
-            int parserHTTPrequest_Line(const std::vector<std::string>&, json&);
-            int parserHTTPrequest_Header(const std::vector<std::string>&, json&);
-            int parserHTTPrequest_Body(const std::vector<std::string>&, json&);
-
-            HTTPmethods StringToHTTPMethod(const std::string&);  
+            const bool parserHTTPrequest_Line(const std::vector<std::string>&, json&);
+            const bool parserHTTPrequest_Header(const std::vector<std::string>&, json&);
+            const bool parserHTTPrequest_Body(const std::vector<std::string>&, json&) const; 
     };
 
 } // namespace http

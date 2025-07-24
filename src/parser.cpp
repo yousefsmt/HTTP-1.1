@@ -11,7 +11,7 @@ namespace http
 {
 
     json ParserMessage::parserHTTPrequest(std::string& MessageRequest){
-        int LineIDX {}, ImportMethod {};
+        uint8_t LineIDX {};
         std::vector<std::string> SeparateLines {};
         std::string EachLine {};
 
@@ -19,12 +19,12 @@ namespace http
             LineIDX = (MessageRequest.find('\n') == std::string::npos) ? 0 : MessageRequest.find('\n');
             if (LineIDX){
                 if (LineIDX==1){
-                    MessageRequest.erase(0, LineIDX+1);
+                    MessageRequest.erase(0, LineIDX + 1);
                     SeparateLines.emplace_back(MessageRequest);
                 }
                 else{
                     SeparateLines.emplace_back(MessageRequest.substr(0, LineIDX-1));
-                    MessageRequest.erase(0, LineIDX+1);
+                    MessageRequest.erase(0, LineIDX + 1);
                 }
             }
             else{    
@@ -32,58 +32,72 @@ namespace http
             }
         }   
 
-        parserHTTPrequest_Line(SeparateLines, HTTPmessage_request);
-        parserHTTPrequest_Header(SeparateLines, HTTPmessage_request);
-        parserHTTPrequest_Body(SeparateLines, HTTPmessage_request);
+        parserHTTPrequest_Line(SeparateLines, ParsedHTTP_request);
+        parserHTTPrequest_Header(SeparateLines, ParsedHTTP_request);
+        parserHTTPrequest_Body(SeparateLines, ParsedHTTP_request);
 
-        return HTTPmessage_request;
+        return ParsedHTTP_request;
     }
 
-    int ParserMessage::parserHTTPrequest_Line(const std::vector<std::string>& MessageRequest, json& ModifySET){
+    const bool ParserMessage::parserHTTPrequest_Line(const std::vector<std::string>& MessageRequest, json& ModifySET){
         std::istringstream iss(MessageRequest[0]);
         std::string token {};
-        std::vector<std::string> test {"Method", "Request-URL", "HTTP-Version"};
-        int i {};
+        const std::array<const std::string, 3> test {"Method", "Request-URL", "HTTP-Version"};
+        uint8_t Idx {};
 
         while (std::getline(iss, token, ' ')) {
-            ModifySET["Request-Line"][test[i]] = token;
-            i++;
+            ModifySET["Request-Line"][test[Idx]] = token;
+            Idx++;
         }
-        
-        return 1;
+
+        try {
+            static const std::unordered_map<std::string, HTTPmethods> methodMap = {
+                {"OPTIONS", HTTPmethods::OPTIONS},
+                {"GET",     HTTPmethods::GET},
+                {"HEAD",    HTTPmethods::HEAD},
+                {"POST",    HTTPmethods::POST},
+                {"PUT",     HTTPmethods::PUT},
+                {"DELETE",  HTTPmethods::DELETE},
+                {"TRACE",   HTTPmethods::TRACE},
+                {"CONNECT", HTTPmethods::CONNECT},
+                {"UNKNOWN", HTTPmethods::UNKNOWN}
+            };
+
+            const std::string& methodStr = ModifySET["Request-Line"]["Method"];
+            auto it = methodMap.find(methodStr);
+            if (it != methodMap.end()) {
+                ExtractedMETHOD = it->second;
+            } else {
+                std::cerr << "Unsupported HTTP method: " << methodStr << '\n';
+                ExtractedMETHOD = HTTPmethods::UNKNOWN;
+                return false;
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Exception caught: " << e.what() << '\n';
+            return false;
+        }
+        return true;
     }
 
-    int ParserMessage::parserHTTPrequest_Header(const std::vector<std::string>& MessageRequest, json& ModifySET){
-        int TempNum {};
+    const bool ParserMessage::parserHTTPrequest_Header(const std::vector<std::string>& MessageRequest, json& ModifySET){
+        uint8_t TempNum {};
         std::string LineIdx {}, Text {}, EachLine {};
 
         for (size_t num = 1;num < MessageRequest.size()-1;num++){
             EachLine = MessageRequest[num];
             TempNum = EachLine.find(':');
             LineIdx = EachLine.substr(0, TempNum);
-            Text = EachLine.substr(TempNum+2, EachLine.length());
+            Text = EachLine.substr(TempNum + 2, EachLine.length());
             ModifySET["Header"][LineIdx] = Text;
         }
-
-        return 1;
+        return true;
     }
 
-    int ParserMessage::parserHTTPrequest_Body(const std::vector<std::string>& MessageRequest, json& ModifySET){
+    const bool ParserMessage::parserHTTPrequest_Body(const std::vector<std::string>& MessageRequest, json& ModifySET) const {
         
         ModifySET["Message-Body"] = MessageRequest.back();
 
-        return 1;
+        return true;
     }
 
-    HTTPmethods ParserMessage::StringToHTTPMethod(const std::string& s) {
-        auto it = MethodMAP.find(s);
-        if (it != MethodMAP.end()) return it->second;
-        throw std::invalid_argument("Unknown HTTP method: " + s);
-    }
-
-    std::string ParserMessage::CreateHTTP_Response(){
-        std::string x {};
-
-        return x;
-    }
 } // namespace http
