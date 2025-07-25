@@ -13,7 +13,6 @@ namespace http
     json ParserMessage::parserHTTPrequest(std::string& MessageRequest){
         uint8_t LineIDX {};
         std::vector<std::string> SeparateLines {};
-        std::string EachLine {};
 
         while (true) {
             LineIDX = (MessageRequest.find('\n') == std::string::npos) ? 0 : MessageRequest.find('\n');
@@ -42,7 +41,7 @@ namespace http
     const bool ParserMessage::parserHTTPrequest_Line(const std::vector<std::string>& MessageRequest, json& ModifySET){
         std::istringstream iss(MessageRequest[0]);
         std::string token {};
-        const std::array<const std::string, 3> test {"Method", "Request-URL", "HTTP-Version"};
+        const std::array<const char[13], 3> test {"Method", "Request-URL", "HTTP-Version"};
         uint8_t Idx {};
 
         while (std::getline(iss, token, ' ')) {

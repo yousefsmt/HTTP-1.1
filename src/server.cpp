@@ -7,7 +7,7 @@
 
 namespace http
 {
-    TCPServer::TCPServer(const std::string& IPaddress, const std::string& Port)
+    TCPServer::TCPServer(const char* IPaddress, const char* Port)
         : ServerSocket(0), ClientSocket(0), ServerAddress({0}), ServerLength(0), IPaddress_(IPaddress), Port_(Port)
     {
         CreateServerSocket();
@@ -31,7 +31,7 @@ namespace http
         PortNumber_Casted = static_cast<uint16_t>(std::stoi(Port_));
 
         ServerAddress.sin_family = AF_INET;
-        inet_pton(AF_INET, IPaddress_.c_str(), &(ServerAddress.sin_addr.s_addr));
+        inet_pton(AF_INET, IPaddress_, &(ServerAddress.sin_addr.s_addr));
         ServerAddress.sin_port = htons(PortNumber_Casted);
         ServerLength = sizeof(ServerAddress);
 

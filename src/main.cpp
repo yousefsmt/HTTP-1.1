@@ -1,7 +1,5 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <sys/time.h>
-#include <cpr/cpr.h>
 
 #include "parser.hpp"
 #include "server.hpp"
@@ -10,21 +8,21 @@ using json = nlohmann::json;
 using namespace http;
 
 int main(int argc, char* argv[]) {
-    std::string ip {"0.0.0.0"};
-    std::string port {"80"};
-
-    ParserMessage ParserTools;
-    json ParsedMessage;
+    char ip[16] = "0.0.0.0";
+    char port[6] = "80";
 
     switch (argc) {
         case 1:
             break;
         case 2:
-            ip = argv[1];
+            strncpy(ip, argv[1], sizeof(ip) - 1);
+            ip[sizeof(ip) - 1] = '\0';
             break;
         case 3:
-            ip = argv[1];
-            port = argv[2];
+            strncpy(ip, argv[1], sizeof(ip) - 1);
+            ip[sizeof(ip) - 1] = '\0';
+            strncpy(port, argv[2], sizeof(port) - 1);
+            port[sizeof(port) - 1] = '\0';
             break;
         default:
             std::cerr << "Usage: " << argv[0] << " [IP_ADDRESS] [PORT]\n";

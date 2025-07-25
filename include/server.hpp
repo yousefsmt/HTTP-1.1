@@ -32,14 +32,14 @@ namespace http
 {
     class TCPServer {
         public:
-            TCPServer(const std::string& IPaddress, const std::string& Port);
+            TCPServer(const char* IPaddress, const char* Port);
             ~TCPServer();
         private:
             int ServerSocket, ClientSocket;
             sockaddr_in ServerAddress;
             socklen_t ServerLength;
-            const std::string IPaddress_;
-            const std::string Port_;
+            const char* IPaddress_;
+            const char* Port_;
             const bool CreateServerSocket();
             const bool CloseServerSocket();
     };
