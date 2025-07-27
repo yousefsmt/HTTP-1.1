@@ -11,6 +11,9 @@ int main(int argc, char* argv[]) {
     char ip[16] = "0.0.0.0";
     char port[6] = "80";
 
+    ParserMessage ParserObj;
+    json ParsedMessage;
+
     switch (argc) {
         case 1:
             break;
@@ -30,7 +33,7 @@ int main(int argc, char* argv[]) {
     }
 
     try {
-        TCPServer runServer(ip, port);
+        TCPServer runServer(ip, port); 
     } catch (const std::exception& ex) {
         std::cerr << "Failed to start server: " << ex.what() << '\n';
         return 1;

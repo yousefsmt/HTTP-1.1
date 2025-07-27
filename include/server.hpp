@@ -25,15 +25,22 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <thread>
+
+#include "parser.hpp"
 
 #define BUFFER_SIZE 4096
+#define BLOCK_SIZE 1000
 
 namespace http
 {
-    class TCPServer {
+    class TCPServer : public ParserMessage{
         public:
             TCPServer(const char* IPaddress, const char* Port);
             ~TCPServer();
+
+            char Receive_Buffer[BUFFER_SIZE];
+            
         private:
             int ServerSocket, ClientSocket;
             sockaddr_in ServerAddress;
@@ -42,6 +49,9 @@ namespace http
             const char* Port_;
             const bool CreateServerSocket();
             const bool CloseServerSocket();
+            const bool AcceptHandler();
+            const bool ReceiveHandler();
+            const bool RunAllThread();
     };
     
 } // namespace http

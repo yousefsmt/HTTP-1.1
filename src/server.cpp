@@ -2,11 +2,15 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <cstring>
+#include <nlohmann/json.hpp>
 
 #include "server.hpp"
 
 namespace http
 {
+    using json = nlohmann::json;
+
     TCPServer::TCPServer(const char* IPaddress, const char* Port)
         : ServerSocket(0), ClientSocket(0), ServerAddress({0}), ServerLength(0), IPaddress_(IPaddress), Port_(Port)
     {
@@ -41,7 +45,7 @@ namespace http
             return false;
         }
 
-        isCorrect = listen(ServerSocket, 20);
+        isCorrect = listen(ServerSocket, BLOCK_SIZE);
         if (isCorrect == -1){
             perror("Listen failed: ");
             return false;
@@ -50,11 +54,7 @@ namespace http
             std::cout << "Server listening...\n";
         }
 
-        sockaddr_in clidd {};
-        socklen_t cliddddlen {};
-        cliddddlen = sizeof(clidd);
-        int cli = accept(ServerSocket, (sockaddr*)&clidd, &cliddddlen);
-
+        RunAllThread();    
         return true;
     }
 
@@ -63,16 +63,58 @@ namespace http
 
         isClose = close(ServerSocket);
         if (isClose == -1){
-            perror("Close failed:");
+            perror("Close server:");
             return false;
         }
         isClose = close(ClientSocket);
         if (isClose == -1){
-            perror("Close failed:");
+            perror("Close client:");
             return false;
         }
 
         return true;
     }
     
+    const bool TCPServer::AcceptHandler(){
+        sockaddr_in ClientAddress {};
+        socklen_t ClientLength {};
+        ClientLength = sizeof(ClientAddress);
+
+        while (true){    
+            ClientSocket = accept(ServerSocket, (sockaddr*)&ClientAddress, &ClientLength);
+            if (ClientSocket == -1){
+                perror("accept failed: ");
+                break;
+            }
+            else
+                ReceiveHandler();    
+        }
+
+        return true;
+    }
+
+    const bool TCPServer::ReceiveHandler(){
+        int isCorrect {};
+        std::memset(Receive_Buffer, 0, BUFFER_SIZE);
+
+        isCorrect = recv(ClientSocket, Receive_Buffer, BUFFER_SIZE-1, 0);
+        if (Receive_Buffer[0] != '\0'){
+            json j;
+            ParserMessage parse;
+            std::string x = Receive_Buffer;
+            std::cout << x;
+            std::cout << "************************";
+            j = parse.parserHTTPrequest(x);
+            std::cout << std::setw(4) << j << '\n';
+        }
+            
+        return true;
+    }
+
+    const bool TCPServer::RunAllThread(){
+        std::thread AcceptThread(&TCPServer::AcceptHandler, this);   
+        AcceptThread.join();
+        return true;
+    }
+
 } // namespace http
