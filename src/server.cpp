@@ -23,7 +23,7 @@ namespace http
     }
 
     const bool TCPServer::CreateServerSocket(){
-        uint8_t isCorrect {};
+        int isCorrect {};
         uint16_t PortNumber_Casted {};
 
         ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -59,7 +59,7 @@ namespace http
     }
 
     const bool TCPServer::CloseServerSocket(){
-        uint8_t isClose {};
+        int isClose {};
 
         isClose = close(ServerSocket);
         if (isClose == -1){
