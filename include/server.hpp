@@ -13,11 +13,12 @@
  *
  * Usage:
  * Include this file to add HTTP server functionality to your application.
- * This module focuses on server-side behavior; it does not perform HTTP parsing.
+ * This module focuses on server-side behavior; it does not perform HTTP
+ * parsing.
  *
  * Author: Yousef.smt
  * Date: 02-Jul-2024
-*/
+ */
 
 #ifndef HTTP_INCLUDE_SERVER_H_
 #define HTTP_INCLUDE_SERVER_H_
@@ -32,28 +33,27 @@
 #define BUFFER_SIZE 4096
 #define BLOCK_SIZE 1000
 
-namespace http
-{
-    class TCPServer : public ParserMessage{
-        public:
-            TCPServer(const char* IPaddress, const char* Port);
-            ~TCPServer();
+namespace http {
+class TCPServer : public ParserMessage {
+public:
+  TCPServer(const char *IPaddress, const char *Port);
+  ~TCPServer();
 
-            char Receive_Buffer[BUFFER_SIZE];
-            
-        private:
-            int ServerSocket, ClientSocket;
-            sockaddr_in ServerAddress;
-            socklen_t ServerLength;
-            const char* IPaddress_;
-            const char* Port_;
-            const bool CreateServerSocket();
-            const bool CloseServerSocket();
-            const bool AcceptHandler();
-            const bool ReceiveHandler();
-            const bool RunAllThread();
-    };
-    
+  char Receive_Buffer[BUFFER_SIZE];
+
+private:
+  int ServerSocket, ClientSocket;
+  sockaddr_in ServerAddress;
+  socklen_t ServerLength;
+  const char *IPaddress_;
+  const char *Port_;
+  bool CreateServerSocket();
+  bool CloseServerSocket();
+  bool AcceptHandler();
+  bool ReceiveHandler();
+  bool RunAllThread();
+};
+
 } // namespace http
 
 #endif // HTTP_INCLUDE_SERVER_H_
