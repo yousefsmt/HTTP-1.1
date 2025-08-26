@@ -4,6 +4,8 @@ repos:
     hooks:
       - id: clang-format
         files: \.(cpp|hpp|cc|c|h)$
+        args:
+          - --style=file   # use your .clang-format in repo root
 
   - repo: local
     hooks:
@@ -13,7 +15,10 @@ repos:
         language: system
         types: [c++]
         files: \.(cpp|cc|cxx|h|hpp)$
-        args: [-p=build]
+        args:
+          - -p=build       # points to build folder with compile_commands.json
+          - --quiet        # optional: suppress extra output
+          - --config-file=.clang-tidy  # ensure it uses your repo config
 
       - id: cppcheck
         name: cppcheck

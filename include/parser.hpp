@@ -30,35 +30,37 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-namespace http {
+namespace http
+{
 using json = nlohmann::json;
 
-enum class HTTPmethods {
-  OPTIONS,
-  GET,
-  HEAD,
-  POST,
-  PUT,
-  DELETE,
-  TRACE,
-  CONNECT,
-  UNKNOWN
+enum class HTTPmethods : uint8_t
+{
+	OPTIONS,
+	GET,
+	HEAD,
+	POST,
+	PUT,
+	DELETE,
+	TRACE,
+	CONNECT,
+	UNKNOWN
 };
 
-class ParserMessage {
-public:
-  ParserMessage() = default;
-  ~ParserMessage() = default;
+class ParserMessage
+{
+  public:
+	ParserMessage();
 
-  json parserHTTPrequest(std::string &);
+	json ParserHttPrequest(std::string& message_request);
 
-private:
-  HTTPmethods ExtractedMETHOD;
-  json ParsedHTTP_request;
+  private:
+	HTTPmethods extracted_method;
+	json parsed_http_request;
 
-  bool parserHTTPrequest_Line(const std::vector<std::string> &, json &);
-  bool parserHTTPrequest_Header(const std::vector<std::string> &, json &);
-  bool parserHTTPrequest_Body(const std::vector<std::string> &, json &) const;
+	bool ParserHttPrequestLine(const std::vector<std::string>& message_request, json& modify_set);
+	bool ParserHttPrequestHeader(const std::vector<std::string>& message_request, json& modify_set);
+	bool ParserHttPrequestBody(const std::vector<std::string>& message_request, json& modify_set);
 };
 
 } // namespace http

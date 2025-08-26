@@ -23,35 +23,45 @@
 #ifndef HTTP_INCLUDE_SERVER_H_
 #define HTTP_INCLUDE_SERVER_H_
 
-#include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
+
+#include <iostream>
 #include <thread>
+#include <array>
 
 #include "parser.hpp"
 
-#define BUFFER_SIZE 4096
-#define BLOCK_SIZE 1000
+namespace http
+{
 
-namespace http {
-class TCPServer : public ParserMessage {
-public:
-  TCPServer(const char *IPaddress, const char *Port);
-  ~TCPServer();
+constexpr size_t block_size{1000};
+constexpr size_t buffer_size{4096};
 
-  char Receive_Buffer[BUFFER_SIZE];
+class TCPServer : public ParserMessage
+{
+  public:
+	TCPServer(const std::string& ip_address, const std::string& port_address);
 
-private:
-  int ServerSocket, ClientSocket;
-  sockaddr_in ServerAddress;
-  socklen_t ServerLength;
-  const char *IPaddress_;
-  const char *Port_;
-  bool CreateServerSocket();
-  bool CloseServerSocket();
-  bool AcceptHandler();
-  bool ReceiveHandler();
-  bool RunAllThread();
+	TCPServer(const TCPServer&) = delete;
+	TCPServer& operator=(const TCPServer&) = delete;
+	TCPServer(TCPServer&&) = delete;
+	TCPServer& operator=(TCPServer&&) = delete;
+	~TCPServer();
+
+  private:
+	std::array<char, buffer_size> receive_buffer{};
+	int server_socket{};
+	int client_socket{};
+	sockaddr_in server_address{};
+	socklen_t server_length{};
+	std::string ip_address_;
+	std::string port_;
+	bool CreateServerSocket();
+	bool CloseServerSocket() const;
+	bool AcceptHandler();
+	bool ReceiveHandler();
+	bool RunAllThread();
 };
 
 } // namespace http

@@ -1,120 +1,144 @@
+#include "server.hpp"
+
 #include <arpa/inet.h>
-#include <cstring>
-#include <iostream>
-#include <nlohmann/json.hpp>
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "server.hpp"
+#include <cstring>
+#include <iostream>
+#include <nlohmann/json.hpp>
 
-namespace http {
+namespace http
+{
 using json = nlohmann::json;
 
-TCPServer::TCPServer(const char *IPaddress, const char *Port)
-    : ServerSocket(0), ClientSocket(0), ServerLength(0), IPaddress_(IPaddress),
-      Port_(Port) {
-  CreateServerSocket();
+TCPServer::TCPServer(const std::string& ip_address, const std::string& port_address) :
+	ip_address_(ip_address), port_(port_address)
+{
+	CreateServerSocket();
 }
 
-TCPServer::~TCPServer() {
-  if (!CloseServerSocket())
-    std::cout << "ERROR: Sockets close failed.\n";
+TCPServer::~TCPServer()
+{
+	if(!CloseServerSocket())
+	{
+		std::cout << "ERROR: Sockets close failed.\n";
+	}
 }
 
-bool TCPServer::CreateServerSocket() {
-  int isCorrect{};
-  uint16_t PortNumber_Casted{};
+bool TCPServer::CreateServerSocket()
+{
+	int is_correct{};
+	uint16_t port_number_cast{};
 
-  ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
-  if (ServerSocket == -1) {
-    perror("Creation socket: ");
-    return false;
-  }
+	server_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if(server_socket == -1)
+	{
+		perror("Creation socket: ");
+		return false;
+	}
 
-  PortNumber_Casted = static_cast<uint16_t>(std::stoi(Port_));
+	port_number_cast = static_cast<uint16_t>(std::stoi(port_));
 
-  ServerAddress.sin_family = AF_INET;
-  inet_pton(AF_INET, IPaddress_, &(ServerAddress.sin_addr.s_addr));
-  ServerAddress.sin_port = htons(PortNumber_Casted);
-  ServerLength = sizeof(ServerAddress);
+	server_address.sin_family = AF_INET;
+	inet_pton(AF_INET, ip_address_.c_str(), &(server_address.sin_addr.s_addr));
+	server_address.sin_port = htons(port_number_cast);
+	server_length = sizeof(server_address);
 
-  isCorrect = bind(ServerSocket, (sockaddr *)&ServerAddress, ServerLength);
-  if (isCorrect == -1) {
-    perror("Bind failed: ");
-    return false;
-  }
+	is_correct = bind(server_socket, reinterpret_cast<sockaddr*>(&server_address), server_length);
+	if(is_correct == -1)
+	{
+		perror("Bind failed: ");
+		return false;
+	}
 
-  isCorrect = listen(ServerSocket, BLOCK_SIZE);
-  if (isCorrect == -1) {
-    perror("Listen failed: ");
-    return false;
-  } else {
-    std::cout << "Server listening...\n";
-  }
+	is_correct = listen(server_socket, block_size);
+	if(is_correct == -1)
+	{
+		perror("Listen failed: ");
+		return false;
+	}
+	else
+	{
+		std::cout << "Server listening...\n";
+		RunAllThread();
+		return true;
+	}
 
-  RunAllThread();
-  return true;
+	return true;
 }
 
-bool TCPServer::CloseServerSocket() {
-  int isClose{};
+bool TCPServer::CloseServerSocket() const
+{
+	int is_close{};
 
-  isClose = close(ServerSocket);
-  if (isClose == -1) {
-    perror("Close server:");
-    return false;
-  }
-  isClose = close(ClientSocket);
-  if (isClose == -1) {
-    perror("Close client:");
-    return false;
-  }
+	is_close = close(server_socket);
+	if(is_close == -1)
+	{
+		perror("Close server:");
+		return false;
+	}
+	is_close = close(client_socket);
+	if(is_close == -1)
+	{
+		perror("Close client:");
+		return false;
+	}
 
-  return true;
+	return true;
 }
 
-bool TCPServer::AcceptHandler() {
-  sockaddr_in ClientAddress{};
-  socklen_t ClientLength{};
-  ClientLength = sizeof(ClientAddress);
+bool TCPServer::AcceptHandler()
+{
+	sockaddr_in client_address{};
+	socklen_t client_length{sizeof(client_address)};
 
-  while (true) {
-    ClientSocket =
-        accept(ServerSocket, (sockaddr *)&ClientAddress, &ClientLength);
-    if (ClientSocket == -1) {
-      perror("accept failed: ");
-      break;
-    } else
-      ReceiveHandler();
-  }
+	while(true)
+	{
+		client_socket =
+			accept(server_socket, reinterpret_cast<sockaddr*>(&client_address), &client_length);
+		if(client_socket == -1)
+		{
+			perror("accept failed: ");
+			return false;
+		}
+		else
+		{
+			ReceiveHandler();
+		}
+	}
 
-  return true;
+	return true;
 }
 
-bool TCPServer::ReceiveHandler() {
-  ssize_t isCorrect{};
-  std::memset(Receive_Buffer, 0, BUFFER_SIZE);
+bool TCPServer::ReceiveHandler()
+{
+	ssize_t is_correct{};
 
-  isCorrect = recv(ClientSocket, Receive_Buffer, BUFFER_SIZE - 1, 0);
-  if (isCorrect > 0 && Receive_Buffer[0] != '\0') {
-    json j;
-    ParserMessage parse;
-    std::string x = Receive_Buffer;
-    std::cout << x;
-    std::cout << "************************";
-    j = parse.parserHTTPrequest(x);
-    std::cout << std::setw(4) << j << '\n';
-  } else if (isCorrect == -1) {
-    perror("recv failed: ");
-  }
+	is_correct = recv(client_socket, receive_buffer.data(), receive_buffer.size() - 1, 0);
+	if(is_correct > 0 && receive_buffer[0] != '\0')
+	{
+		json parsed_msg;
+		ParserMessage parse;
+		std::string to_string_buffer = receive_buffer.data();
+		std::cout << to_string_buffer;
+		std::cout << "************************";
+		parsed_msg = parse.ParserHttPrequest(to_string_buffer);
+		std::cout << std::setw(4) << parsed_msg << '\n';
+	}
+	else if(is_correct == -1)
+	{
+		perror("recv failed: ");
+	}
 
-  return true;
+	return true;
 }
 
-bool TCPServer::RunAllThread() {
-  std::thread AcceptThread(&TCPServer::AcceptHandler, this);
-  AcceptThread.join();
-  return true;
+bool TCPServer::RunAllThread()
+{
+	std::thread accept_thread(&TCPServer::AcceptHandler, this);
+	accept_thread.join();
+	return true;
 }
 
 } // namespace http
