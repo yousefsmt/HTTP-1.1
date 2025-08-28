@@ -36,31 +36,31 @@ using json = nlohmann::json;
 
 enum class HTTPmethods : uint8_t
 {
-	OPTIONS,
-	GET,
-	HEAD,
-	POST,
-	PUT,
-	DELETE,
-	TRACE,
-	CONNECT,
-	UNKNOWN
+    OPTIONS,
+    GET,
+    HEAD,
+    POST,
+    PUT,
+    DELETE,
+    TRACE,
+    CONNECT,
+    UNKNOWN
 };
 
 class ParserMessage
 {
   public:
-	ParserMessage();
+    ParserMessage();
 
-	json ParserHttPrequest(std::string& message_request);
+    json ParserHttPrequest(std::string& message_request);
 
   private:
-	HTTPmethods extracted_method;
-	json parsed_http_request;
+    HTTPmethods extracted_method;
+    json        parsed_http_request;
 
-	bool ParserHttPrequestLine(const std::vector<std::string>& message_request, json& modify_set);
-	bool ParserHttPrequestHeader(const std::vector<std::string>& message_request, json& modify_set);
-	bool ParserHttPrequestBody(const std::vector<std::string>& message_request, json& modify_set);
+    bool ParserHttPrequestLine(const std::vector<std::string>& message_request, json& modify_set);
+    bool ParserHttPrequestHeader(const std::vector<std::string>& message_request, json& modify_set);
+    bool ParserHttPrequestBody(const std::vector<std::string>& message_request, json& modify_set);
 };
 
 } // namespace http
