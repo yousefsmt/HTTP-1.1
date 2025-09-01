@@ -1,85 +1,125 @@
-# 🚀 HTTP/1.1 Server in Modern C++ (RFC 2616)
+# HTTP/1.1 Server in Modern C++
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![C++17](https://img.shields.io/badge/language-C++17-blue.svg)]()
-[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL-lightgrey.svg)]()
-
-An educational yet functional HTTP/1.1 server implemented from scratch using modern C++. Inspired by the official [RFC 2616](https://datatracker.ietf.org/doc/html/rfc2616), this project helps you understand how web servers work under the hood.
-
----
-
-## 🧠 Why This Project?
-
-This project is ideal for:
-
-- 🧑‍💻 Developers wanting to understand raw HTTP communication  
-- 🎓 Students learning about networking and socket programming  
-- 🤓 Enthusiasts exploring low-level protocols  
-
-Learn how to:
-
-- Parse and respond to raw HTTP/1.1 requests  
-- Build a standards-compliant server  
-- Use TCP sockets in C++  
+A lightweight and modular implementation of an **HTTP/1.1 server** written in **C++17**, built with modern coding standards and static analysis tools.
 
 ---
 
 ## ✨ Features
 
-- ✅ TCP socket server  
-- ✅ HTTP/1.1 request parsing (method, path, headers)  
-- ✅ Response generation (status line, headers, body)  
-- ✅ Persistent/non-persistent connection support  
-- 🔜 Header parsing (`Content-Length`, `Host`)  
-- 🔜 Keep-Alive and chunked transfer encoding  
-- 🔜 Static file serving  
-- 🔜 Full RFC 2616 compliance  
-- 🔜 Modular unit testing  
+- 🔹 Full support for **HTTP/1.1 request parsing**  
+- 🔹 Lightweight server core (`server.hpp`, `server.cpp`)  
+- 🔹 Request/response **parser** (`parser.hpp`, `parser.cpp`)  
+- 🔹 **CMake-based build system**  
+- 🔹 Integrated **clang-format** and **clang-tidy** configs for style and linting  
+- 🔹 Pre-commit hooks for consistent code quality  
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
-HTTP-1.1/
-├── include/ # Header files
-│ ├── server.hpp # Core server logic
-│ └── parser.hpp # HTTP parser
-├── src/ # Source files
-│ ├── main.cpp # Entry point
-│ ├── server.cpp # Server implementation
-│ └── parser.cpp # Parsing implementation
-├── CMakeLists.txt # Build configuration
-├── .gitignore
-├── LICENSE
+```
+HTTP-1.1-main/
+├── include/           # Public headers
+│   ├── parser.hpp
+│   └── server.hpp
+├── src/               # Implementation files
+│   ├── main.cpp       # Entry point
+│   ├── parser.cpp
+│   └── server.cpp
+├── .clang-format      # Code style configuration
+├── .clang-tidy        # Static analysis configuration
+├── .pre-commit-config.yaml
+├── CMakeLists.txt     # Build configuration
 └── README.md
-
-
----
-
-## ⚙️ Requirements
-
-- C++17 or later  
-- CMake ≥ 3.14  
-- POSIX-compliant OS (Linux, macOS, or WSL)  
+```
 
 ---
 
-## 🚀 Getting Started
+## ⚡ Getting Started
 
+### 1. Clone the repository
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/http-server-rfc2616.git
-cd http-server-rfc2616
+git clone https://github.com/yourusername/HTTP-1.1.git
+cd HTTP-1.1-main
+```
 
-# Create a build directory
+### 2. Build the project
+```bash
 mkdir build && cd build
-
-# Configure with CMake
 cmake ..
-
-# Compile the server
 make
+```
 
-# Run the server
-./HttpServer <Address> <PORT>
+### 3. Run the server
+```bash
+./HttpServer <IP address> <Port Address>
+```
+
+By default, the server listens on **localhost:80** (configurable in `main.cpp`).
+
+---
+
+## 🔧 Configuration
+
+- Update **`main.cpp`** to set the port or customize server behavior.
+- Modify **`parser.cpp`** to extend or refine request parsing.
+
+---
+
+## 🧪 Development & Code Quality
+
+- **Linting & formatting**:  
+  Run `clang-tidy` and `clang-format` to enforce style and catch issues.
+- **Pre-commit hooks**:  
+  Ensure consistency before committing:
+  ```bash
+  pre-commit install
+  ```
+
+---
+
+## 📜 Requirements
+
+- **C++17 or newer**
+- **CMake 3.10+**
+- **clang-format / clang-tidy** (for development)
+
+---
+
+## 🚀 Roadmap
+
+- [ ] Add HTTPS (TLS) support  
+- [ ] Implement request routing  
+- [ ] Support for persistent connections & pipelining  
+- [ ] Add unit tests (GoogleTest / Catch2)  
+- [ ] Benchmarking and performance tuning  
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!  
+Please fork the repo, create a branch, and submit a pull request.
+
+---
+
+## ❤️ Support & Donations
+
+If you find this project useful and want to support its development, you can donate using **USDT** on different blockchains:
+
+- **USDT (ERC-20 / Ethereum):**
+`0x47D04bDb5c3C75aF977cdfeEBEdc25443d4Fe59A`  
+- **USDT (TRC-20 / TRON):** 
+`TCy9XkJpqzwopt99FaHMztVYJji2LJY7Wr`  
+- **USDT (BEP-20 / BNB Smart Chain):**
+`0x47D04bDb5c3C75aF977cdfeEBEdc25443d4Fe59A`  
+
+💡 *Every contribution helps keep this project alive and evolving 🚀*
+
+---
+
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+See [LICENSE](LICENSE) for details.
