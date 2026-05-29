@@ -103,21 +103,6 @@ Please fork the repo, create a branch, and submit a pull request.
 
 ---
 
-## ❤️ Support & Donations
-
-If you find this project useful and want to support its development, you can donate using **USDT** on different blockchains:
-
-- **USDT (ERC-20 / Ethereum):**
-`0x47D04bDb5c3C75aF977cdfeEBEdc25443d4Fe59A`  
-- **USDT (TRC-20 / TRON):** 
-`TCy9XkJpqzwopt99FaHMztVYJji2LJY7Wr`  
-- **USDT (BEP-20 / BNB Smart Chain):**
-`0x47D04bDb5c3C75aF977cdfeEBEdc25443d4Fe59A`  
-
-💡 *Every contribution helps keep this project alive and evolving 🚀*
-
----
-
 
 ## 📄 License
 
