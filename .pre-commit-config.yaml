@@ -1,12 +1,19 @@
 repos:
+  # -------------------------------
+  # 1. clang-format (code style)
+  # -------------------------------
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v20.1.8
     hooks:
       - id: clang-format
-        files: \.(cpp|hpp|cc|c|h)$
+        name: clang-format
+        files: \.(cpp|hpp|cc|cxx|h)$
         args:
-          - --style=file   # use your .clang-format in repo root
+          - --style=file
 
+  # -------------------------------
+  # 2. clang-tidy (static analysis)
+  # -------------------------------
   - repo: local
     hooks:
       - id: clang-tidy
@@ -16,13 +23,20 @@ repos:
         types: [c++]
         files: \.(cpp|cc|cxx|h|hpp)$
         args:
-          - -p=build       # points to build folder with compile_commands.json
-          - --quiet        # optional: suppress extra output
-          - --config-file=.clang-tidy  # ensure it uses your repo config
+          - -p=build
+          - --config-file=.clang-tidy
+          - --quiet
 
+  # -------------------------------
+  # 3. cppcheck (extra safety)
+  # -------------------------------
       - id: cppcheck
         name: cppcheck
-        entry: cppcheck --enable=all --inconclusive --quiet
+        entry: cppcheck
         language: system
         types: [c++]
         files: \.(cpp|cc|cxx|h|hpp)$
+        args:
+          - --enable=all
+          - --inconclusive
+          - --quiet
